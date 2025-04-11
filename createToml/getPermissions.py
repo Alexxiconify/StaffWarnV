@@ -26,8 +26,14 @@ for pl, cmd, node, desc in permissions:
     if cmd in commands and len(commands[cmd]) > len(node):
         commands[cmd] = node
 
+
+# head and ehead are duplicated in the source data
+# we arbitrarily pick one
+finished_commands = set()
 for cmd in sorted(set(commands)):
     node = commands[cmd]
 
     for c in sorted({cmd, *ALIASES[cmd]}):
-        print(f'{c} = "{node}"')
+        if c not in finished_commands:
+            print(f'{c} = "{node}"')
+            finished_commands.add(c)
