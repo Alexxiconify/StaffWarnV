@@ -17,22 +17,20 @@ import org.slf4j.Logger
 /**
  * StaffWarnV - A Velocity plugin to warn staff members about privileged command usage
  *
- * This plugin monitors command execution and alerts staff when they use commands
- * that require special permissions, helping to prevent accidental privilege escalation.
+ * This plugin monitors command execution and alerts staff when they use commands that require
+ * special permissions, helping to prevent accidental privilege escalation.
+ *
  * @property proxy The Velocity proxy server instance
  * @property logger Plugin logger
  * @property dataDirectory Plugin data directory
  */
-@Plugin(
-    authors = ["Restitutor"],
-    id = "staffwarnv",
-    name = "StaffWarnV",
-    version = "1.0.0",
-)
-class StaffWarnV @Inject constructor(
+@Plugin(authors = ["Restitutor"], id = "staffwarnv", name = "StaffWarnV", version = "1.0.0")
+class StaffWarnV
+@Inject
+constructor(
     private val proxy: ProxyServer,
     private val logger: Logger,
-    @DataDirectory private val dataDirectory: Path
+    @DataDirectory private val dataDirectory: Path,
 ) {
     private lateinit var permissionMan: PermissionManager
     private val mm = MiniMessage.miniMessage()
@@ -51,7 +49,6 @@ class StaffWarnV @Inject constructor(
             logger.error("Failed to initialize StaffWarnV: ${e.message}", e)
         }
     }
-
 
     /**
      * Monitors command execution and alerts staff about privileged commands
@@ -72,19 +69,23 @@ class StaffWarnV @Inject constructor(
         // Skip if player doesn't have permission (wouldn't be able to use it anyway)
         if (!player.hasPermission(permission)) return
 
-        proxy.scheduler.buildTask(this) { ->
-            try {
-                val origin = permissionMan.checkPermissionAndAlert(player, permission)
+        proxy.scheduler
+            .buildTask(this) { ->
+                try {
+                    val origin = permissionMan.checkPermissionAndAlert(player, permission)
 
-                // Log and send alert to player
-                if (origin != null) {
-                    logger.info("${player.username} used ${event.command} (requires $permission) from $origin")
-                    player.sendMessage(createAlert(event.command, permission, origin))
+                    // Log and send alert to player
+                    if (origin != null) {
+                        logger.info(
+                            "${player.username} used ${event.command} (requires $permission) from $origin"
+                        )
+                        player.sendMessage(createAlert(event.command, permission, origin))
+                    }
+                } catch (e: Exception) {
+                    logger.error("Error processing command alert: ${e.message}", e)
                 }
-            } catch (e: Exception) {
-                logger.error("Error processing command alert: ${e.message}", e)
             }
-        }.schedule()
+            .schedule()
     }
 
     /**
@@ -96,12 +97,12 @@ class StaffWarnV @Inject constructor(
      * @return A formatted component with the alert message
      */
     private fun createAlert(command: String, permission: String, origin: String): Component {
-        val message = permissionMan.alertTemplate
-            .replace("%command%", command)
-            .replace("%permission%", permission)
-            .replace("%origin%", origin)
+        val message =
+            permissionMan.alertTemplate
+                .replace("%command%", command)
+                .replace("%permission%", permission)
+                .replace("%origin%", origin)
 
         return mm.deserialize(message)
     }
-
 }

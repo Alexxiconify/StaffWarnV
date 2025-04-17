@@ -13,16 +13,13 @@ import org.slf4j.Logger
 /**
  * Manages permission checks and configuration for the StaffWarnV plugin
  *
- * This class handles loading configuration files, checking permissions against LuckPerms,
- * and determining the origin of a permission for alert messages.
+ * This class handles loading configuration files, checking permissions against LuckPerms, and
+ * determining the origin of a permission for alert messages.
  *
  * @property logger Logger for outputting messages
  * @property dataDirectory Path to the plugin's data directory
  */
-internal class PermissionManager(
-    private val logger: Logger,
-    private val dataDirectory: Path
-) {
+internal class PermissionManager(private val logger: Logger, private val dataDirectory: Path) {
     /** Template for alert messages with placeholders */
     val alertTemplate: String
 
@@ -47,8 +44,8 @@ internal class PermissionManager(
     /**
      * Checks if a player's permission requires an alert
      *
-     * This method determines if a player should be alerted about their permission usage
-     * based on the server they're on, default groups, and permission origin.
+     * This method determines if a player should be alerted about their permission usage based on
+     * the server they're on, default groups, and permission origin.
      *
      * @param player The player who executed the command
      * @param permission The permission required for the command
@@ -58,7 +55,8 @@ internal class PermissionManager(
         // Skip if player is not on a server
         val serverOpt = player.currentServer
         if (!serverOpt.isPresent) {
-            if (verboseLogging) logger.debug("Skipping alert for ${player.username} - not on a server")
+            if (verboseLogging)
+                logger.debug("Skipping alert for ${player.username} - not on a server")
             return null
         }
 
@@ -66,32 +64,36 @@ internal class PermissionManager(
 
         // Skip excluded servers
         if (server in excludedServers) {
-            if (verboseLogging) logger.debug("Skipping alert for ${player.username} - server $server is excluded")
+            if (verboseLogging)
+                logger.debug("Skipping alert for ${player.username} - server $server is excluded")
             return null
         }
 
         // Create server context for permission checks
-        val context = MutableContextSet.create().apply {
-            add("server", server)
-        }
+        val context = MutableContextSet.create().apply { add("server", server) }
 
         // Skip if default groups have this permission
         if (defaultGroupsHavePermission(context, permission)) {
-            if (verboseLogging) logger.debug("Skipping alert for ${player.username} - permission $permission is in default groups")
+            if (verboseLogging)
+                logger.debug(
+                    "Skipping alert for ${player.username} - permission $permission is in default groups"
+                )
             return null
         }
 
         // Get origin of permission for this player
         val origin = getPermissionOrigin(player, context, permission)
         if (verboseLogging) {
-            logger.debug("Alert triggered for ${player.username} - permission $permission from $origin on server $server")
+            logger.debug(
+                "Alert triggered for ${player.username} - permission $permission from $origin on server $server"
+            )
         }
         return origin
     }
 
     /**
-     * Checks if any of the default groups have the specified permission
-     * Uses caching to improve performance for repeated checks
+     * Checks if any of the default groups have the specified permission.
+     * Uses caching to improve performance for repeated checks.
      *
      * @param context The context to check permissions in (e.g., server context)
      * @param permission The permission to check
@@ -103,18 +105,20 @@ internal class PermissionManager(
         val cacheKey = "$serverName:$permission"
 
         // Return cached result if available
-        permissionCheckCache[cacheKey]?.let { return it }
+        permissionCheckCache[cacheKey]?.let {
+            return it
+        }
 
         val lpApi = LuckPermsProvider.get()
-        val result = defaultGroups.any { groupName ->
-            lpApi.groupManager.getGroup(groupName)?.cachedData?.getPermissionData(
-                QueryOptions.contextual(
-                    context,
-                ),
-            )
-                ?.checkPermission(permission)?.asBoolean()
-                ?: false
-        }
+        val result =
+            defaultGroups.any { groupName ->
+                lpApi.groupManager
+                    .getGroup(groupName)
+                    ?.cachedData
+                    ?.getPermissionData(QueryOptions.contextual(context))
+                    ?.checkPermission(permission)
+                    ?.asBoolean() ?: false
+            }
 
         // Cache the result
         permissionCheckCache[cacheKey] = result
@@ -128,8 +132,8 @@ internal class PermissionManager(
     }
 
     /**
-     * Determines the origin of a permission for a player
-     * Uses caching to improve performance for repeated lookups
+     * Determines the origin of a permission for a player Uses caching to improve performance for
+     * repeated lookups
      *
      * @param player The player to check
      * @param context The context to check permissions in
@@ -139,7 +143,7 @@ internal class PermissionManager(
     fun getPermissionOrigin(
         player: Player,
         context: MutableContextSet,
-        permission: String
+        permission: String,
     ): String {
         // Create cache key
         val uuid = player.uniqueId.toString()
@@ -147,15 +151,21 @@ internal class PermissionManager(
         val cacheKey = "$uuid:$serverName:$permission"
 
         // Check cache first
-        permissionOriginCache[cacheKey]?.let { return it }
+        permissionOriginCache[cacheKey]?.let {
+            return it
+        }
 
         return try {
             val lpApi = LuckPermsProvider.get()
             val user = lpApi.getPlayerAdapter(Player::class.java).getUser(player)
 
-            val origin = user.resolveDistinctInheritedNodes(QueryOptions.contextual(context))
-                .firstOrNull { node -> node.key == permission }
-                ?.metadata(InheritanceOriginMetadata.KEY)?.origin?.name ?: "unknown"
+            val origin =
+                user
+                    .resolveDistinctInheritedNodes(QueryOptions.contextual(context))
+                    .firstOrNull { node -> node.key == permission }
+                    ?.metadata(InheritanceOriginMetadata.KEY)
+                    ?.origin
+                    ?.name ?: "unknown"
 
             // Cache the result
             permissionOriginCache[cacheKey] = origin
@@ -205,9 +215,7 @@ internal class PermissionManager(
         }
     }
 
-    /**
-     * Initializes the permission manager by loading all configuration files
-     */
+    /** Initializes the permission manager by loading all configuration files */
     init {
         try {
             // Load command permissions mapping with optimized access
@@ -217,9 +225,7 @@ internal class PermissionManager(
                 val commandMap = HashMap<String, String>(commandCount + (commandCount / 3))
 
                 // Populate the map with command -> permission pairs
-                commands.entrySet().forEach {
-                    commandMap[it.key] = it.getValue<String>()
-                }
+                commands.entrySet().forEach { commandMap[it.key] = it.getValue<String>() }
 
                 commandPermissions = commandMap
                 logger.debug("Command permission map created with ${commandMap.size} entries")
@@ -238,7 +244,9 @@ internal class PermissionManager(
             }
 
             logger.info("Loaded ${commandPermissions.size} command permissions")
-            logger.info("Configured with ${defaultGroups.size} default groups and ${excludedServers.size} excluded servers")
+            logger.info(
+                "Configured with ${defaultGroups.size} default groups and ${excludedServers.size} excluded servers"
+            )
 
             if (verboseLogging) {
                 logger.debug("Default groups: ${defaultGroups.joinToString()}")
