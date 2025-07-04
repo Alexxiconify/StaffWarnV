@@ -40,6 +40,7 @@
               <artifactSet>
                 <includes>
                   <include>com.electronwill.night-config:toml</include>
+                  <include>com.electronwill.night-config:core</include>
                 </includes>
               </artifactSet>
               <filters>
