@@ -1,7 +1,10 @@
 package me.arcator.staffWarnV;
 
-import com.electronwill.nightconfig.core.file.FileConfig;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
@@ -221,29 +224,32 @@ public class PermissionManager {
      * Loads a configuration file, creating it if it doesn't exist
      *
      * @param file The name of the configuration file
-     * @return The loaded FileConfig object
+     * @return The loaded FileConfiguration object
      */
-    private FileConfig getConfig(String file) {
-        Path configFile = dataDirectory.resolve(file);
+    private FileConfiguration getConfig(String file) {
+        File configFile = dataDirectory.resolve(file).toFile();
 
         try {
             // Create data directory if it doesn't exist
-            if (Files.notExists(dataDirectory)) {
-                Path created = Files.createDirectories(dataDirectory);
-                logger.info("Created config folder: " + created);
+            if (!dataDirectory.toFile().exists()) {
+                Files.createDirectories(dataDirectory);
+                logger.info("Created config folder: " + dataDirectory);
             }
 
             // Log if we're using the default config file
-            if (Files.notExists(configFile)) {
-                logger.info("Creating default config at: " + configFile.toAbsolutePath());
+            if (!configFile.exists()) {
+                logger.info("Creating default config at: " + configFile.getAbsolutePath());
             }
 
             // Load the config with default values if the file doesn't exist
-            FileConfig config = FileConfig.builder(configFile)
-                .defaultData(getClass().getResource("/" + file))
-                .autosave()
-                .build();
-            config.load();
+            FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+            
+            // Save default config if it doesn't exist
+            if (!configFile.exists()) {
+                config.options().copyDefaults(true);
+                config.save(configFile);
+            }
+            
             return config;
         } catch (Exception e) {
             logger.severe("Failed to load config file " + file + ": " + e.getMessage());
@@ -276,31 +282,28 @@ public class PermissionManager {
     private void initialize() {
         try {
             // Load command permissions mapping with optimized access
-            try (FileConfig commands = getConfig("commandPermissions.toml")) {
-                // Create a map optimized for faster lookups with expected size
-                int commandCount = commands.entrySet().size();
-                Map<String, String> commandMap = new HashMap<>(commandCount + (commandCount / 3));
+            FileConfiguration commands = getConfig("commandPermissions.yml");
+            // Create a map optimized for faster lookups with expected size
+            int commandCount = commands.getKeys(false).size();
+            Map<String, String> commandMap = new HashMap<>(commandCount + (commandCount / 3));
 
-                // Populate the map with command -> permission pairs
-                for (var entry : commands.entrySet()) {
-                    commandMap.put(entry.getKey(), (String) entry.getValue());
-                }
-
-                this.commandPermissions = commandMap;
-                logger.fine("Command permission map created with " + commandMap.size() + " entries");
+            // Populate the map with command -> permission pairs
+            for (String command : commands.getKeys(false)) {
+                commandMap.put(command, commands.getString(command));
             }
+
+            this.commandPermissions = commandMap;
+            logger.fine("Command permission map created with " + commandMap.size() + " entries");
 
             // Load main configuration
-            try (FileConfig conf = getConfig("config.toml")) {
-                this.defaultGroups = conf.get("defaultGroups");
-                this.excludedServers = conf.get("excludedServers");
-                this.verboseLogging = conf.getOrElse("debug.verbose", false);
-            }
+            FileConfiguration conf = getConfig("config.yml");
+            this.defaultGroups = conf.getStringList("defaultGroups");
+            this.excludedServers = conf.getStringList("excludedServers");
+            this.verboseLogging = conf.getBoolean("debug.verbose", false);
 
             // Load message templates
-            try (FileConfig messages = getConfig("messages.toml")) {
-                this.alertTemplate = messages.get("alert");
-            }
+            FileConfiguration messages = getConfig("messages.yml");
+            this.alertTemplate = messages.getString("alert");
 
             logger.info("Loaded " + commandPermissions.size() + " command permissions");
             logger.info(
