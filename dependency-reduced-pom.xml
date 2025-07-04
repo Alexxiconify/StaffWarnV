@@ -6,7 +6,7 @@
   <name>StaffWarnV</name>
   <version>1.0.0</version>
   <build>
-    <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+    <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
     <defaultGoal>clean package</defaultGoal>
     <resources>
       <resource>
@@ -27,24 +27,6 @@
     </resources>
     <plugins>
       <plugin>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-maven-plugin</artifactId>
-        <version>${kotlin.version}</version>
-        <executions>
-          <execution>
-            <id>compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <jvmTarget>${java.version}</jvmTarget>
-          <outputDirectory>${project.build.directory}/classes</outputDirectory>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.5.3</version>
         <executions>
@@ -58,9 +40,6 @@
               <artifactSet>
                 <includes>
                   <include>com.electronwill.night-config:toml</include>
-                  <include>org.jetbrains.kotlin:kotlin-stdlib-jdk8</include>
-                  <include>org.jetbrains.kotlin:kotlin-stdlib-jdk7</include>
-                  <include>org.jetbrains.kotlin:kotlin-stdlib</include>
                 </includes>
               </artifactSet>
               <filters>
@@ -74,6 +53,25 @@
                     <exclude>META-INF/*.kotlin_module</exclude>
                     <exclude>META-INF/*.kotlin_metadata</exclude>
                     <exclude>META-INF/*.kotlin_builtins</exclude>
+                    <exclude>**/*.kotlin_metadata</exclude>
+                    <exclude>**/*.kotlin_module</exclude>
+                    <exclude>**/*.kotlin_builtins</exclude>
+                    <exclude>**/*.proto</exclude>
+                    <exclude>**/*.txt</exclude>
+                    <exclude>**/*.md</exclude>
+                    <exclude>**/*.html</exclude>
+                    <exclude>**/*.xml</exclude>
+                    <exclude>**/*.json</exclude>
+                    <exclude>**/*.yml</exclude>
+                    <exclude>**/*.toml</exclude>
+                    <exclude>**/doc/**</exclude>
+                    <exclude>**/docs/**</exclude>
+                    <exclude>**/test/**</exclude>
+                    <exclude>**/tests/**</exclude>
+                    <exclude>**/sample/**</exclude>
+                    <exclude>**/samples/**</exclude>
+                    <exclude>**/example/**</exclude>
+                    <exclude>**/examples/**</exclude>
                   </excludes>
                 </filter>
               </filters>
@@ -135,7 +133,6 @@
     </dependency>
   </dependencies>
   <properties>
-    <kotlin.version>2.1.20</kotlin.version>
     <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
