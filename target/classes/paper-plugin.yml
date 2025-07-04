@@ -1,4 +1,3 @@
-loader: java
 main: me.arcator.staffWarnV.StaffWarnV
 name: StaffWarnV
 version: 1.0.1
