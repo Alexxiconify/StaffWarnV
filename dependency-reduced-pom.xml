@@ -12,6 +12,17 @@
       <resource>
         <filtering>true</filtering>
         <directory>${project.basedir}/src/main/resources</directory>
+        <excludes>
+          <exclude>plugin.yml</exclude>
+          <exclude>paper-plugin.yml</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+        <includes>
+          <include>plugin.yml</include>
+          <include>paper-plugin.yml</include>
+        </includes>
       </resource>
     </resources>
     <plugins>

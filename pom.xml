@@ -13,7 +13,6 @@
 
     <properties>
         <java.version>21</java.version>
-        <kotlin.version>2.1.20</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -33,32 +32,26 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>plugin.yml</exclude>
+                    <exclude>paper-plugin.yml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>plugin.yml</include>
+                    <include>paper-plugin.yml</include>
+                </includes>
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <jvmTarget>${java.version}</jvmTarget>
-                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -74,9 +67,6 @@
                             <artifactSet>
                                 <includes>
                                     <include>com.electronwill.night-config:toml</include>
-                                    <include>org.jetbrains.kotlin:kotlin-stdlib-jdk8</include>
-                                    <include>org.jetbrains.kotlin:kotlin-stdlib-jdk7</include>
-                                    <include>org.jetbrains.kotlin:kotlin-stdlib</include>
                                 </includes>
                             </artifactSet>
                             <filters>
@@ -90,6 +80,25 @@
                                         <exclude>META-INF/*.kotlin_module</exclude>
                                         <exclude>META-INF/*.kotlin_metadata</exclude>
                                         <exclude>META-INF/*.kotlin_builtins</exclude>
+                                        <exclude>**/*.kotlin_metadata</exclude>
+                                        <exclude>**/*.kotlin_module</exclude>
+                                        <exclude>**/*.kotlin_builtins</exclude>
+                                        <exclude>**/*.proto</exclude>
+                                        <exclude>**/*.txt</exclude>
+                                        <exclude>**/*.md</exclude>
+                                        <exclude>**/*.html</exclude>
+                                        <exclude>**/*.xml</exclude>
+                                        <exclude>**/*.json</exclude>
+                                        <exclude>**/*.yml</exclude>
+                                        <exclude>**/*.toml</exclude>
+                                        <exclude>**/doc/**</exclude>
+                                        <exclude>**/docs/**</exclude>
+                                        <exclude>**/test/**</exclude>
+                                        <exclude>**/tests/**</exclude>
+                                        <exclude>**/sample/**</exclude>
+                                        <exclude>**/samples/**</exclude>
+                                        <exclude>**/example/**</exclude>
+                                        <exclude>**/examples/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -126,12 +135,6 @@
             <artifactId>paper-api</artifactId>
             <version>1.21.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.electronwill.night-config</groupId>
