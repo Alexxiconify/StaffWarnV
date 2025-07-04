@@ -89,7 +89,6 @@
                                         <exclude>**/*.html</exclude>
                                         <exclude>**/*.xml</exclude>
                                         <exclude>**/*.json</exclude>
-                                        <exclude>**/*.yml</exclude>
                                         <exclude>**/*.toml</exclude>
                                         <exclude>**/doc/**</exclude>
                                         <exclude>**/docs/**</exclude>
