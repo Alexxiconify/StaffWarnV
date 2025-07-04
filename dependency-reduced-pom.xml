@@ -63,17 +63,6 @@
                     <exclude>META-INF/*.kotlin_module</exclude>
                     <exclude>META-INF/*.kotlin_metadata</exclude>
                     <exclude>META-INF/*.kotlin_builtins</exclude>
-                    <exclude>**/*.proto</exclude>
-                    <exclude>**/*.txt</exclude>
-                    <exclude>**/*.md</exclude>
-                    <exclude>**/*.html</exclude>
-                    <exclude>**/*.xml</exclude>
-                    <exclude>**/*.json</exclude>
-                    <exclude>**/*.yml</exclude>
-                    <exclude>**/*.toml</exclude>
-                    <exclude>**/test/**</exclude>
-                    <exclude>**/sample/**</exclude>
-                    <exclude>**/docs/**</exclude>
                   </excludes>
                 </filter>
               </filters>
