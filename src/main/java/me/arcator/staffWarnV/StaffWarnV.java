@@ -34,9 +34,6 @@ public class StaffWarnV extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         try {
-            // Save default config if it doesn't exist
-            saveDefaultConfig();
-            
             permissionMan = new PermissionManager(getLogger(), getDataFolder().toPath());
             getServer().getPluginManager().registerEvents(this, this);
             

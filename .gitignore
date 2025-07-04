@@ -9,11 +9,17 @@ target/
 dependency-reduced-pom.xml
 maven.zip
 apache-maven-*/
+.mvn/
 
 # IntelliJ IDEA
 .idea/
 *.iml
 out/
+
+# Eclipse
+.classpath
+.project
+.settings/
 
 # VS Code
 .vscode/
