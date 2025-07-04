@@ -36,7 +36,7 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <minimizeJar>true</minimizeJar>
+              <minimizeJar>false</minimizeJar>
               <artifactSet>
                 <includes>
                   <include>com.electronwill.night-config:toml</include>
@@ -46,33 +46,7 @@
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                    <exclude>META-INF/versions/9/module-info.class</exclude>
-                    <exclude>META-INF/*.kotlin_module</exclude>
-                    <exclude>META-INF/*.kotlin_metadata</exclude>
-                    <exclude>META-INF/*.kotlin_builtins</exclude>
-                    <exclude>**/*.kotlin_metadata</exclude>
-                    <exclude>**/*.kotlin_module</exclude>
-                    <exclude>**/*.kotlin_builtins</exclude>
-                    <exclude>**/*.proto</exclude>
-                    <exclude>**/*.txt</exclude>
-                    <exclude>**/*.md</exclude>
-                    <exclude>**/*.html</exclude>
-                    <exclude>**/*.xml</exclude>
-                    <exclude>**/*.json</exclude>
-                    <exclude>**/*.toml</exclude>
-                    <exclude>**/doc/**</exclude>
-                    <exclude>**/docs/**</exclude>
-                    <exclude>**/test/**</exclude>
-                    <exclude>**/tests/**</exclude>
-                    <exclude>**/sample/**</exclude>
-                    <exclude>**/samples/**</exclude>
-                    <exclude>**/example/**</exclude>
-                    <exclude>**/examples/**</exclude>
-                  </excludes>
+                  <excludes />
                 </filter>
               </filters>
             </configuration>
