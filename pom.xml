@@ -56,6 +56,7 @@
                 </executions>
                 <configuration>
                     <jvmTarget>${java.version}</jvmTarget>
+                    <outputDirectory>${project.build.directory}/classes</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -85,8 +86,10 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
-                                        <exclude>META-INF/MANIFEST.MF</exclude>
                                         <exclude>META-INF/versions/9/module-info.class</exclude>
+                                        <exclude>META-INF/*.kotlin_module</exclude>
+                                        <exclude>META-INF/*.kotlin_metadata</exclude>
+                                        <exclude>META-INF/*.kotlin_builtins</exclude>
                                     </excludes>
                                 </filter>
                             </filters>

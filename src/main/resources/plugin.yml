@@ -5,4 +5,10 @@ api-version: '1.21'
 authors: [Restitutor]
 description: A plugin to warn staff members about privileged command usage
 depend: [LuckPerms]
-softdepend: [EssentialsX] 
+softdepend: [EssentialsX]
+
+# Permissions
+permissions:
+  staffwarnv.bypass:
+    description: Allows players to bypass StaffWarnV alerts
+    default: op 

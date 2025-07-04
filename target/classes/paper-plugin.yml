@@ -1,0 +1,9 @@
+loader: java
+main: me.arcator.staffWarnV.StaffWarnV
+name: StaffWarnV
+version: 1.0.1
+api-version: 1.21
+authors:
+  - Restitutor
+description: A plugin to warn staff members about privileged command usage
+website: https://github.com/your-repo 
