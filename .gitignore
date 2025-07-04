@@ -1,0 +1,41 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven
+target/
+dependency-reduced-pom.xml
+maven.zip
+apache-maven-*/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Gradle
+.gradle/
+build/
+
+# Other
+*.swp
+*.swo
+
+# Python (for createToml)
+__pycache__/
+*.pyc
+
+# Backup files
+*~ 
