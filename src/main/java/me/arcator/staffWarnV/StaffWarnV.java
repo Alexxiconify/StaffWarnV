@@ -34,6 +34,14 @@ public class StaffWarnV extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         try {
+            // Check for LuckPerms dependency FIRST, before any other initialization
+            if (getServer().getPluginManager().getPlugin("LuckPerms") == null) {
+                getLogger().severe("LuckPerms is not installed! StaffWarnV requires LuckPerms to function.");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
+
+            // Only initialize PermissionManager if LuckPerms is present
             permissionMan = new PermissionManager(getLogger(), getDataFolder().toPath());
             getServer().getPluginManager().registerEvents(this, this);
             
