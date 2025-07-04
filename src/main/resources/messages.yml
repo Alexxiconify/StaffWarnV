@@ -6,5 +6,4 @@
 # %permission% - The permission required for the command
 # %origin% - The group that granted the permission
 
-# Alert shown to staff when they use a command that requires special permissions
-alert = "<gray>Non-staff lack <yellow>%permission%</yellow> <gray>from <yellow>%origin%</yellow> <gray>so they cannot use <yellow>%command%</yellow>"
+alert: "<gray>Non-staff lack <yellow>%permission%</yellow> <gray>from <yellow>%origin%</yellow> <gray>so they cannot use <yellow>%command%</yellow>" 

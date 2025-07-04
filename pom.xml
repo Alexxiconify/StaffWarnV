@@ -32,23 +32,10 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
-        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>plugin.yml</exclude>
-                    <exclude>paper-plugin.yml</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
+                <directory>src/main/resources</directory>
                 <filtering>false</filtering>
-                <includes>
-                    <include>plugin.yml</include>
-                    <include>paper-plugin.yml</include>
-                </includes>
             </resource>
         </resources>
         <plugins>
@@ -64,12 +51,6 @@
                         </goals>
                         <configuration>
                             <minimizeJar>false</minimizeJar>
-                            <artifactSet>
-                                <includes>
-                                    <include>com.electronwill.night-config:toml</include>
-                                    <include>com.electronwill.night-config:core</include>
-                                </includes>
-                            </artifactSet>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -113,12 +94,6 @@
             <artifactId>paper-api</artifactId>
             <version>1.21.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.electronwill.night-config</groupId>
-            <artifactId>toml</artifactId>
-            <version>3.8.1</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.luckperms</groupId>

@@ -1,13 +1,14 @@
 # StaffWarnV Configuration
 
 # Groups containing commands which are always allowed for staff
-defaultGroups = ["default", "trusted"]
+defaultGroups:
+  - default
+  - trusted
 
 # Servers where command alerts are disabled completely
 # Useful for servers with complex per-world rules
-excludedServers = ["hub"]
+excludedServers:
+  - hub
 
-# Debug settings
-[debug]
-# Enable verbose logging for debugging permission issues
-verbose = false
+debug:
+  verbose: false 

@@ -37,16 +37,14 @@
             </goals>
             <configuration>
               <minimizeJar>false</minimizeJar>
-              <artifactSet>
-                <includes>
-                  <include>com.electronwill.night-config:toml</include>
-                  <include>com.electronwill.night-config:core</include>
-                </includes>
-              </artifactSet>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
-                  <excludes />
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
                 </filter>
               </filters>
             </configuration>
