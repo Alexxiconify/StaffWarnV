@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.arcator</groupId>
-    <artifactId>StaffWarnV</artifactId>
-    <version>1.0.0</version>
+    <artifactId>StaffWarn</artifactId>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>StaffWarnV</name>
